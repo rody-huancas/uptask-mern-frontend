@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import AppLaoyut from "./layouts/AppLaoyut";
-import DashboardView from "./views/DashboardView";
+import AppLaoyut from "@/layouts/AppLaoyut";
+import DashboardView from "@/views/DashboardView";
 
 const Router = () => {
   return (
