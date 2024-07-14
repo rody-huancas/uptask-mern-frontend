@@ -1,6 +1,10 @@
+import { Outlet } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
+
 import Logo from "@/components/Logo";
 import NavMenu from "@/components/NavMenu";
-import { Outlet } from "react-router-dom";
 
 const AppLaoyut = () => {
   return (
@@ -18,11 +22,13 @@ const AppLaoyut = () => {
         <Outlet />
       </section>
 
-      <div className="py-5">
+      <footer className="py-5">
         <p className="text-center">
           Todos los derechos reservados {new Date().getFullYear()}
         </p>
-      </div>
+      </footer>
+
+      <ToastContainer pauseOnHover={false} pauseOnFocusLoss={false} />
     </>
   );
 };
