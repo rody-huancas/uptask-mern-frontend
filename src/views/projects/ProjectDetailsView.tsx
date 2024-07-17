@@ -3,6 +3,7 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 
 import { getProjectById } from "@/api/ProjectAPI";
 
+import TaskList from "@/components/tasks/TaskList";
 import AddTaskModal from "@/components/tasks/AddTaskModal";
 
 const ProjectDetailsView = () => {
@@ -35,6 +36,10 @@ const ProjectDetailsView = () => {
             Agregar Tarea
           </button>
         </nav>
+
+        <TaskList
+          tasks={data.tasks}  
+        />
 
         <AddTaskModal />
       </>

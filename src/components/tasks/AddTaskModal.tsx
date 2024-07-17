@@ -1,29 +1,48 @@
+import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { Fragment } from "react";
+import { useMutation } from "@tanstack/react-query";
 import { Dialog, Transition } from "@headlessui/react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+
+import { createTask } from "@/api/TaskAPI";
+import { TaskFormData } from "@/types/index";
 
 import TaskForm from "./TaskForm";
-import { TaskFormData } from "@/types/index";
 
 const AddTaskModal = () => {
   const navigate = useNavigate();
 
+  // Leer si el modal existe
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const modalTask = queryParams.get("newTask");
   const show = modalTask ? true : false;
 
-  const initialValues: TaskFormData = {
-    name: "",
-    description: "",
-  };
+  // Obtener projectId
+  const params = useParams();
+  const projectId = params.projectId!;
 
-  const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: initialValues })
+  const initialValues: TaskFormData = { name: "", description: "" };
+
+  const { register, handleSubmit, formState: { errors }, reset } = useForm({ defaultValues: initialValues });
+
+  const { mutate } = useMutation({
+    mutationFn: createTask,
+    onError: (error) => {
+      toast.error(error.message);
+    },
+    onSuccess: (data) => {
+      toast.success(data);
+      reset();
+      navigate("", { replace: true });
+    },
+  });
 
   const handleCreateTask = (formData: TaskFormData) => {
-    console.log(formData);
-  }
+    const data = { formData, projectId };
+    mutate(data);
+  };
 
   return (
     <>
@@ -66,7 +85,11 @@ const AddTaskModal = () => {
                     <span className="text-fuchsia-600">una tarea</span>
                   </p>
 
-                  <form className="mt-10 space-y-3" noValidate onSubmit={handleSubmit(handleCreateTask)}>
+                  <form
+                    className="mt-10 space-y-3"
+                    noValidate
+                    onSubmit={handleSubmit(handleCreateTask)}
+                  >
                     <TaskForm register={register} errors={errors} />
                     <input
                       type="submit"
