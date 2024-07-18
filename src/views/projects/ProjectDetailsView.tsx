@@ -5,6 +5,7 @@ import { getProjectById } from "@/api/ProjectAPI";
 
 import TaskList from "@/components/tasks/TaskList";
 import AddTaskModal from "@/components/tasks/AddTaskModal";
+import EditTaskModal from "@/components/tasks/EditTaskModal";
 
 const ProjectDetailsView = () => {
   const navigate = useNavigate();
@@ -42,6 +43,7 @@ const ProjectDetailsView = () => {
         />
 
         <AddTaskModal />
+        <EditTaskModal />
       </>
     );
 };
