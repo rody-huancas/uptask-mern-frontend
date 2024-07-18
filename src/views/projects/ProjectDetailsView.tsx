@@ -43,7 +43,7 @@ const ProjectDetailsView = () => {
         />
 
         <AddTaskModal />
-        <EditTaskModal />
+        {/* <EditTaskModal /> */}
       </>
     );
 };
