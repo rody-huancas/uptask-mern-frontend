@@ -1,9 +1,48 @@
-import { Transition, Dialog } from "@headlessui/react";
-import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import { Fragment } from "react/jsx-runtime";
+import { useNavigate, useParams } from "react-router-dom";
+import { Transition, Dialog } from "@headlessui/react";
 
-const EditTaskModal = () => {
+import { Task, TaskFormData } from "@/types/index";
+import TaskForm from "./TaskForm";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { updateTask } from "@/api/TaskAPI";
+import { toast } from "react-toastify";
+
+type EditTaskModalProps = {
+  data: Task
+  taskId: Task['_id']
+}
+
+const EditTaskModal = ({ data, taskId }: EditTaskModalProps) => {
   const navigate = useNavigate();
+
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<TaskFormData>({ defaultValues: {
+    name: data.name,
+    description: data.description
+  }});
+
+  const params = useParams();
+  const projectId = params.projectId!;
+
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation({
+    mutationFn: updateTask,
+    onError: (error) => {
+      toast.error(error.message);
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["editProject", projectId] });
+      toast.success(data);
+      reset();
+      navigate("", { replace: true });
+    },
+  })
+
+  const handleEditTask = (formData: TaskFormData) => {
+    const data = { projectId, taskId, formData };
+    mutate(data)
+  }
 
   return (
     <Transition appear show={true} as={Fragment}>
@@ -45,7 +84,10 @@ const EditTaskModal = () => {
                   <span className="text-fuchsia-600">este formulario</span>
                 </p>
 
-                <form className="mt-10 space-y-3" noValidate>
+                <form className="mt-10 space-y-3" onSubmit={handleSubmit(handleEditTask)} noValidate>
+
+                  <TaskForm register={register} errors={errors} />
+
                   <input
                     type="submit"
                     className=" bg-fuchsia-600 hover:bg-fuchsia-700 w-full p-3  text-white font-black  text-xl cursor-pointer"
