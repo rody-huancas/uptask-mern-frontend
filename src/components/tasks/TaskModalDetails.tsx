@@ -1,16 +1,34 @@
 import { Fragment } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Dialog, Transition } from "@headlessui/react";
+import { useQuery } from "@tanstack/react-query";
+import { getTaskById } from "@/api/TaskAPI";
+import { toast } from "react-toastify";
+import { formatDate } from "@/utils/utils";
 
 const TaskModalDetails = () => {
   const navigate = useNavigate();
+  const params = useParams();
+  const projectId = params.projectId!;
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const modalTask = queryParams.get("viewTask");
-  const show = modalTask ? true : false;
+  const taskId = queryParams.get("viewTask")!;
+  const show = taskId ? true : false;
 
-  return (
+  const { data, isError, error } = useQuery({
+    queryKey: ["task", taskId],
+    queryFn: () => getTaskById({ taskId, projectId }),
+    enabled: !!taskId,
+    retry: false,
+  });
+
+  if (isError) {
+    toast.error(error.message, { toastId: 'error' });
+    return <Navigate to={`/projects/${projectId}`} />
+  }
+
+  if (data) return (
     <>
       <Transition appear show={show} as={Fragment}>
         <Dialog
@@ -42,17 +60,17 @@ const TaskModalDetails = () => {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all p-16">
-                  <p className="text-sm text-slate-400">Agregada el: </p>
+                  <p className="text-sm text-slate-400">Agregada el: {formatDate(data.createdAt)}</p>
                   <p className="text-sm text-slate-400">
-                    Última actualización:{" "}
+                    Última actualización: {formatDate(data.updatedAt)}
                   </p>
                   <Dialog.Title
                     as="h3"
                     className="font-black text-4xl text-slate-600 my-5"
                   >
-                    Titulo aquí
+                    {data.name}
                   </Dialog.Title>
-                  <p className="text-lg text-slate-500 mb-2">Descripción:</p>
+                  <p className="text-lg text-slate-500 mb-2">Descripción: {data.description}</p>
                   <div className="my-5 space-y-3">
                     <label className="font-bold">Estado Actual:</label>
                   </div>
