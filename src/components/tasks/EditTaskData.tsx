@@ -12,7 +12,7 @@ const EditTaskData = () => {
   const taskId = queryParams.get("editTask")!;
 
   const { data, isError } = useQuery({
-    queryKey: ["editTask", taskId],
+    queryKey: ["task", taskId],
     queryFn: () => getTaskById({ projectId, taskId }),
     enabled: !!taskId,
   });
