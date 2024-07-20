@@ -1,11 +1,12 @@
-import { Task } from "@/types/index";
+import { toast } from "react-toastify";
 import { Fragment } from "react/jsx-runtime";
 import { Menu, Transition } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { Task } from "@/types/index";
 import { deleteTask } from "@/api/TaskAPI";
-import { toast } from "react-toastify";
 
 type TaskCardProps = {
   task: Task;
@@ -62,6 +63,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
                 <button
                   type="button"
                   className="block px-3 py-1 text-sm leading-6 text-gray-900"
+                  onClick={() => navigate(location.pathname + `?viewTask=${task._id}`)}
                 >
                   Ver Tarea
                 </button>
