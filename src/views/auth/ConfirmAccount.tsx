@@ -1,13 +1,14 @@
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { Link, useNavigate } from "react-router-dom";
 import { PinInput, PinInputField } from "@chakra-ui/pin-input"
 
 import { ConfirmToken } from "@/types/index";
 import { confirmAccount } from "@/api/AuthAPI";
 
 const ConfirmAccount = () => {
+  const navigate = useNavigate();
   const [token, setToken] = useState<ConfirmToken["token"]>("")
 
   const { mutate } = useMutation({
@@ -17,6 +18,7 @@ const ConfirmAccount = () => {
     },
     onSuccess: (data) => {
       toast.success(data);
+      navigate("/auth/login");
     },
   })
 
@@ -49,7 +51,7 @@ const ConfirmAccount = () => {
 
       <nav className="mt-10 flex flex-col space-y-4">
         <Link
-          to="/auth/new-code"
+          to="/auth/request-code"
           className="text-center text-gray-300 font-normal"
         >
           Solicitar un nuevo Código

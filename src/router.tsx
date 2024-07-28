@@ -8,6 +8,7 @@ import DashboardView from "@/views/DashboardView";
 import ConfirmAccount from "@/views/auth/ConfirmAccount";
 import EditProjectView from "@/views/projects/EditProjectView";
 import CreateProjectView from "@/views/projects/CreateProjectView";
+import RequestNewCodeView from "@/views/auth/RequestNewCodeView";
 import ProjectDetailsView from "@/views/projects/ProjectDetailsView";
 
 const Router = () => {
@@ -26,6 +27,7 @@ const Router = () => {
           <Route path="/auth/login" element={<LoginView />} />
           <Route path="/auth/register" element={<RegisterView />} />
           <Route path="/auth/confirm-account" element={<ConfirmAccount />} />
+          <Route path="/auth/request-code" element={<RequestNewCodeView />} />
         </Route>
       </Routes>
     </BrowserRouter>
