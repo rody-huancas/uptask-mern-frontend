@@ -6,8 +6,10 @@ import AuthLayout from "@/layouts/AuthLayout";
 import RegisterView from "@/views/auth/RegisterView";
 import DashboardView from "@/views/DashboardView";
 import ConfirmAccount from "@/views/auth/ConfirmAccount";
+import NewPasswordView from "./views/auth/NewPasswordView";
 import EditProjectView from "@/views/projects/EditProjectView";
 import CreateProjectView from "@/views/projects/CreateProjectView";
+import ForgotPasswordView from "@/views/auth/ForgotPasswordView";
 import RequestNewCodeView from "@/views/auth/RequestNewCodeView";
 import ProjectDetailsView from "@/views/projects/ProjectDetailsView";
 
@@ -28,6 +30,8 @@ const Router = () => {
           <Route path="/auth/register" element={<RegisterView />} />
           <Route path="/auth/confirm-account" element={<ConfirmAccount />} />
           <Route path="/auth/request-code" element={<RequestNewCodeView />} />
+          <Route path="/auth/forgot-password" element={<ForgotPasswordView />} />
+          <Route path="/auth/new-password" element={<NewPasswordView />} />
         </Route>
       </Routes>
     </BrowserRouter>
