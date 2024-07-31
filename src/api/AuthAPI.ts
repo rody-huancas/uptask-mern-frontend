@@ -38,6 +38,7 @@ export async function requestConfirmationCode(formData: RequestConfirmationCodeF
 export async function authenticateUser(formData: UserLoginForm) {
   try {
     const { data } = await api.post<string>("/auth/login", formData);
+    localStorage.setItem("AUTH_TOKEN", data);
     return data;
   } catch (error) {
     if (isAxiosError(error) && error.response) {
