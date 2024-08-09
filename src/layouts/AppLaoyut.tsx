@@ -1,5 +1,5 @@
-import { Link, Navigate, Outlet } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import { Link, Navigate, Outlet } from "react-router-dom";
 
 import Logo from "@/components/Logo";
 import NavMenu from "@/components/NavMenu";

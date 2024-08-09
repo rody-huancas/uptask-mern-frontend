@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { Fragment } from "react";
-import { Bars3Icon } from "@heroicons/react/20/solid";
-import { Popover, Transition } from "@headlessui/react";
-import { User } from "../types";
 import { useQueryClient } from "@tanstack/react-query";
+import { Popover, Transition } from "@headlessui/react";
+
+import { User } from "../types";
+
+import { Bars3Icon } from "@heroicons/react/20/solid";
 
 type NavMenuProps = {
   name: User['name'];
