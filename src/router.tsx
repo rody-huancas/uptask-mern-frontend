@@ -8,6 +8,7 @@ import DashboardView from "@/views/DashboardView";
 import ConfirmAccount from "@/views/auth/ConfirmAccount";
 import NewPasswordView from "./views/auth/NewPasswordView";
 import EditProjectView from "@/views/projects/EditProjectView";
+import ProjectTeamView from "./views/projects/ProjectTeamView";
 import CreateProjectView from "@/views/projects/CreateProjectView";
 import ForgotPasswordView from "@/views/auth/ForgotPasswordView";
 import RequestNewCodeView from "@/views/auth/RequestNewCodeView";
@@ -22,6 +23,7 @@ const Router = () => {
           <Route path="/projects/create" element={<CreateProjectView />} />
           <Route path="/projects/:projectId" element={<ProjectDetailsView />} />
           <Route path="/projects/:projectId/edit" element={<EditProjectView />} />
+          <Route path="/projects/:projectId/team" element={<ProjectTeamView />} />
         </Route>
 
         {/* Auth */}
