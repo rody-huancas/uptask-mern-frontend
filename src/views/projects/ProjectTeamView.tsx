@@ -1,14 +1,13 @@
 import { Fragment } from "react/jsx-runtime";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 
+import { toast } from "react-toastify";
 import { Menu, Transition } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 
+import { getProjectTeam, removeUserFromProject } from "@/api/TeamAPI";
 import AddMemberModal from "@/components/team/AddMemberModal";
-
-import { getProjectTeam } from "@/api/TeamAPI";
-
 
 const ProjectTeamView = () => {
   const navigate = useNavigate();
@@ -17,9 +16,21 @@ const ProjectTeamView = () => {
   const projectId = params.projectId!;
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["projectName", projectId],
+    queryKey: ["projectTeam", projectId],
     queryFn: () => getProjectTeam(projectId),
     retry: false,
+  });
+
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation({
+    mutationFn: removeUserFromProject,
+    onError: (error) => {
+      toast.error(error.message);
+    },
+    onSuccess: (data) => {
+      toast.success(data);
+      queryClient.invalidateQueries({ queryKey: ['projectTeam', projectId] });
+    },
   });
 
   if (isLoading) return "Cargando...";
@@ -57,10 +68,15 @@ const ProjectTeamView = () => {
             className="divide-y divide-gray-100 border border-gray-100 mt-10 bg-white shadow-lg"
           >
             {data?.map((member) => (
-              <li key={member._id} className="flex justify-between gap-x-6 px-5 py-10">
+              <li
+                key={member._id}
+                className="flex justify-between gap-x-6 px-5 py-10"
+              >
                 <div className="flex min-w-0 gap-x-4">
                   <div className="min-w-0 flex-auto space-y-2">
-                    <p className="text-2xl font-black text-gray-600">{member.name}</p>
+                    <p className="text-2xl font-black text-gray-600">
+                      {member.name}
+                    </p>
                     <p className="text-sm text-gray-400">{member.email}</p>
                   </div>
                 </div>
@@ -87,6 +103,7 @@ const ProjectTeamView = () => {
                           <button
                             type="button"
                             className="block px-3 py-1 text-sm leading-6 text-red-500"
+                            onClick={() => mutate({projectId, userId: member._id})}
                           >
                             Eliminar del Proyecto
                           </button>
