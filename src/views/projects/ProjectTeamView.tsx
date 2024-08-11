@@ -6,8 +6,8 @@ import { toast } from "react-toastify";
 import { Menu, Transition } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 
-import { getProjectTeam, removeUserFromProject } from "@/api/TeamAPI";
 import AddMemberModal from "@/components/team/AddMemberModal";
+import { getProjectTeam, removeUserFromProject } from "@/api/TeamAPI";
 
 const ProjectTeamView = () => {
   const navigate = useNavigate();

@@ -1,7 +1,9 @@
 import { useState } from "react";
-import NewPasswordToken from "@/components/auth/NewPasswordToken";
-import NewPasswordForm from "@/components/auth/NewPasswordForm";
+
 import { ConfirmToken } from "@/types/index";
+
+import NewPasswordForm from "@/components/auth/NewPasswordForm";
+import NewPasswordToken from "@/components/auth/NewPasswordToken";
 
 const NewPasswordView = () => {
   const [token, setToken] = useState<ConfirmToken["token"]>("");

@@ -2,14 +2,13 @@ import { Fragment } from "react";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { toast } from "react-toastify";
+import { statusTranslations } from "@/locales/es";
+import { Dialog, Transition } from "@headlessui/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { Dialog, Transition } from "@headlessui/react";
-
 import { formatDate } from "@/utils/utils";
-import { getTaskById, updateStatus } from "@/api/TaskAPI";
-import { statusTranslations } from "@/locales/es";
 import { TaskStatus } from "@/types/index";
+import { getTaskById, updateStatus } from "@/api/TaskAPI";
 
 const TaskModalDetails = () => {
   const navigate = useNavigate();
@@ -27,7 +26,6 @@ const TaskModalDetails = () => {
     enabled: !!taskId,
     retry: false,
   });
-
   
   const queryClient = useQueryClient();
   const { mutate } = useMutation({

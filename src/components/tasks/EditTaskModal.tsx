@@ -1,13 +1,14 @@
-import { useForm } from "react-hook-form";
 import { Fragment } from "react/jsx-runtime";
 import { useNavigate, useParams } from "react-router-dom";
-import { Transition, Dialog } from "@headlessui/react";
 
-import { Task, TaskFormData } from "@/types/index";
-import TaskForm from "./TaskForm";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateTask } from "@/api/TaskAPI";
 import { toast } from "react-toastify";
+import { useForm } from "react-hook-form";
+import { Transition, Dialog } from "@headlessui/react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import TaskForm from "./TaskForm";
+import { updateTask } from "@/api/TaskAPI";
+import { Task, TaskFormData } from "@/types/index";
 
 type EditTaskModalProps = {
   data: Task

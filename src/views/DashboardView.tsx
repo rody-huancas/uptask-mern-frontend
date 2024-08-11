@@ -1,9 +1,10 @@
+import { Fragment } from "react";
+
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { deleteProject, getProjects } from "@/api/ProjectAPI";
 
