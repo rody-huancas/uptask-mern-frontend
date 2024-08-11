@@ -2,7 +2,9 @@ import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 
+import SearchResult from "./SearchResult";
 import ErrorMessage from "../ErrorMessage";
+
 import { TeamMemberForm } from "@/types/index";
 import { findUserByEmail } from "@/api/TeamAPI";
 
@@ -21,6 +23,11 @@ const AddMemberForm = () => {
     const data = { projectId, formData };
     mutation.mutate(data);
   };
+
+  const resetData = () => {
+    reset();
+    mutation.reset();
+  }
 
   return (
     <>
@@ -54,8 +61,9 @@ const AddMemberForm = () => {
       </form>
       
       <div className="mt-10">
-        {mutation.isPending && <p className="text-center">Buscando Usuario...</p>}
-        {mutation.error && <p className="text-center">{mutation.error.message}</p>}
+        { mutation.isPending && <p className="text-center">Buscando Usuario...</p> }
+        { mutation.error && <p className="text-center">{mutation.error.message}</p> }
+        { mutation.data && <SearchResult user={mutation.data} reset={resetData} /> }
       </div>
     </>
   );
