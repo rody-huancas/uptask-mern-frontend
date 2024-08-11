@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 
 import ErrorMessage from "../ErrorMessage";
 import { TeamMemberForm } from "@/types/index";
+import { findUserByEmail } from "@/api/TeamAPI";
 
 const AddMemberForm = () => {
   const initialValues: TeamMemberForm = { email: "" };
@@ -12,9 +13,14 @@ const AddMemberForm = () => {
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm({ defaultValues: initialValues });
 
-  const mutation = useMutation({});
+  const mutation = useMutation({
+    mutationFn: findUserByEmail,
+  });
 
-  const handleSearchUser = async () => {};
+  const handleSearchUser = async (formData: TeamMemberForm) => {
+    const data = { projectId, formData };
+    mutation.mutate(data);
+  };
 
   return (
     <>
@@ -34,10 +40,7 @@ const AddMemberForm = () => {
             className="w-full p-3  border-gray-300 border"
             {...register("email", {
               required: "El Email es obligatorio",
-              pattern: {
-                value: /\S+@\S+\.\S+/,
-                message: "E-mail no válido",
-              },
+              pattern: { value: /\S+@\S+\.\S+/, message: "E-mail no válido" },
             })}
           />
           {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
@@ -49,6 +52,11 @@ const AddMemberForm = () => {
           value="Buscar Usuario"
         />
       </form>
+      
+      <div className="mt-10">
+        {mutation.isPending && <p className="text-center">Buscando Usuario...</p>}
+        {mutation.error && <p className="text-center">{mutation.error.message}</p>}
+      </div>
     </>
   );
 }
