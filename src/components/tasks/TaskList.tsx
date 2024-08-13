@@ -3,6 +3,7 @@ import TaskCard from "./TaskCard";
 
 type TaskListProps = {
   tasks: Task[];
+  canEdit: boolean;
 };
 
 type GroupedTasks = {
@@ -33,7 +34,7 @@ const statusTranslations: { [key: string] : string } = {
   completed  : "Completado",
 };
 
-const TaskList = ({ tasks }: TaskListProps) => {
+const TaskList = ({ tasks, canEdit }: TaskListProps) => {
   const groupedTasks = tasks.reduce((acc, task) => {
     let currentGroup = acc[task.status] ? [...acc[task.status]] : [];
     currentGroup = [...currentGroup, task];
@@ -59,7 +60,7 @@ const TaskList = ({ tasks }: TaskListProps) => {
                   No Hay tareas
                 </li>
               ) : (
-                tasks.map((task) => <TaskCard key={task._id} task={task} />)
+                tasks.map((task) => <TaskCard key={task._id} task={task} canEdit={canEdit} />)
               )}
             </ul>
           </div>
