@@ -69,7 +69,7 @@ export async function deleteTask({ projectId, taskId }: Pick<TaskAPI, 'taskId' |
 export async function updateStatus({ projectId, taskId, status }: Pick<TaskAPI, 'taskId' | 'projectId' | 'status'>) {
   try {
     const url = `/projects/${projectId}/tasks/${taskId}/status`;
-    const { data } = await api.put<string>(url, { status });
+    const { data } = await api.post<string>(url, { status });
 
     return data;
   } catch (error) {
