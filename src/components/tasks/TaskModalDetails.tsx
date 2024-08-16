@@ -6,6 +6,8 @@ import { statusTranslations } from "@/locales/es";
 import { Dialog, Transition } from "@headlessui/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+import NotesPanel from "../notes/NotesPanel";
+
 import { formatDate } from "@/utils/utils";
 import { TaskStatus } from "@/types/index";
 import { getTaskById, updateStatus } from "@/api/TaskAPI";
@@ -136,6 +138,8 @@ const TaskModalDetails = () => {
                         )}
                       </select>
                     </div>
+
+                    <NotesPanel />
                   </Dialog.Panel>
                 </Transition.Child>
               </div>
