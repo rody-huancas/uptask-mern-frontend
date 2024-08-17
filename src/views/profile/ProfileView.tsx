@@ -1,7 +1,12 @@
-const ProfileView = () => {
-  return (
-    <div>ProfileView</div>
-  )
-}
+import { useAuth } from "@/hooks/useAuth";
+import ProfileForm from "@/components/profile/ProfileForm";
 
-export default ProfileView
+const ProfileView = () => {
+  const { data, isLoading } = useAuth();
+
+  if (isLoading) return 'Cargando...';
+
+  if (data) return <ProfileForm data={data} />
+};
+
+export default ProfileView;
