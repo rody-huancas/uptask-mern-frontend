@@ -4,10 +4,10 @@ import { isAxiosError } from "axios";
 import { Project, Task, TaskFormData, taskSchema } from "../types/index";
 
 type TaskAPI = {
-  formData: TaskFormData;
+  formData : TaskFormData;
   projectId: Project["_id"];
-  taskId: Task["_id"];
-  status: Task["status"]
+  taskId   : Task["_id"];
+  status   : Task["status"]
 };
 
 export async function createTask({ formData, projectId }: Pick<TaskAPI, 'formData' | 'projectId'>) {
