@@ -1,18 +1,22 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import AppLaoyut from "@/layouts/AppLaoyut";
-import LoginView from "@/views/auth/LoginView";
 import AuthLayout from "@/layouts/AuthLayout";
+import ProfileLayout from "@/layouts/ProfileLayout";
+
+import LoginView from "@/views/auth/LoginView";
+import ProfileView from "@/views/profile/ProfileView";
 import RegisterView from "@/views/auth/RegisterView";
 import DashboardView from "@/views/DashboardView";
 import ConfirmAccount from "@/views/auth/ConfirmAccount";
-import NewPasswordView from "./views/auth/NewPasswordView";
+import NewPasswordView from "@/views/auth/NewPasswordView";
 import EditProjectView from "@/views/projects/EditProjectView";
-import ProjectTeamView from "./views/projects/ProjectTeamView";
+import ProjectTeamView from "@/views/projects/ProjectTeamView";
 import CreateProjectView from "@/views/projects/CreateProjectView";
 import ForgotPasswordView from "@/views/auth/ForgotPasswordView";
 import RequestNewCodeView from "@/views/auth/RequestNewCodeView";
 import ProjectDetailsView from "@/views/projects/ProjectDetailsView";
+import ChangePasswordView from "@/views/profile/ChangePasswordView";
 
 const Router = () => {
   return (
@@ -24,6 +28,11 @@ const Router = () => {
           <Route path="/projects/:projectId" element={<ProjectDetailsView />} />
           <Route path="/projects/:projectId/edit" element={<EditProjectView />} />
           <Route path="/projects/:projectId/team" element={<ProjectTeamView />} />
+
+          <Route element={<ProfileLayout />}>
+            <Route path="/profile" element={<ProfileView />} />
+            <Route path="/profile/password" element={<ChangePasswordView />} />
+          </Route>
         </Route>
 
         {/* Auth */}
