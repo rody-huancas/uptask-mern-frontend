@@ -1,29 +1,50 @@
 import { Fragment } from "react";
 
+import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { Dialog, Transition } from "@headlessui/react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import ErrorMessage from "../ErrorMessage";
 
+import { checkPassword } from "@/api/AuthAPI";
+import { deleteProject } from "@/api/ProjectAPI";
+import { CheckPasswordForm } from "@/types/index";
+
 const DeleteProjectModal = () => {
-  const initialValues = {
-    password: "",
-  };
   const location = useLocation();
   const navigate = useNavigate();
-
+    
+  const initialValues: CheckPasswordForm = { password: "" };
   const queryParams = new URLSearchParams(location.search);
   const deleteProjectId = queryParams.get("deleteProject")!;
   const show = deleteProjectId ? true : false;
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({ defaultValues: initialValues });
+  const { register, handleSubmit, formState: { errors }, reset } = useForm({ defaultValues: initialValues });
 
-  const handleForm = async (formData) => {};
+  const queryClient = useQueryClient();
+
+  const checkUserPasswordMutation = useMutation({
+    mutationFn: checkPassword,
+    onError   : (error) => toast.error(error.message)
+  })
+
+  const deleteProjectMutation = useMutation({
+    mutationFn: deleteProject,
+    onError   : (error) => toast.error(error.message),
+    onSuccess : (data) => {
+      toast.success(data);
+      queryClient.invalidateQueries({ queryKey: ["projects"] });
+      reset();
+      navigate(location.pathname, { replace: true });
+    },
+  });
+
+  const handleForm = async (formData: CheckPasswordForm) => {
+    await checkUserPasswordMutation.mutateAsync(formData);
+    await deleteProjectMutation.mutateAsync(deleteProjectId);
+  };
 
   return (
     <Transition appear show={show} as={Fragment}>

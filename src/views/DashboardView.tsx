@@ -1,38 +1,26 @@
 import { Fragment } from "react";
 
-import { toast } from "react-toastify";
+import { useQuery } from "@tanstack/react-query";
 import { Menu, Transition } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+
+import DeleteProjectModal from "@/components/projects/DeleteProjectModal";
 
 import { useAuth } from "@/hooks/useAuth";
 import { isManager } from "@/utils/policies";
-import { deleteProject, getProjects } from "@/api/ProjectAPI";
-import DeleteProjectModal from "@/components/projects/DeleteProjectModal";
+import { getProjects } from "@/api/ProjectAPI";
 
 const DashboardView = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { data: user, isLoading: authLoading } = useAuth()
+  const { data: user, isLoading: authLoading } = useAuth();
 
   const { data, isLoading } = useQuery({
     queryKey: ["projects"],
-    queryFn: getProjects,
-    retry: false
-  });
-
-  const queryClient = useQueryClient();
-  const { mutate } = useMutation({
-    mutationFn: deleteProject,
-    onError: (error) => {
-      toast.error(error.message);
-    },
-    onSuccess: (data) => {
-      toast.success(data);
-      queryClient.invalidateQueries({ queryKey: ["projects"] });
-    },
+    queryFn : getProjects,
+    retry   : false,
   });
 
   if (isLoading && authLoading) return "Cargando...";
@@ -67,19 +55,15 @@ const DashboardView = () => {
                 <div className="flex min-w-0 gap-x-4">
                   <div className="min-w-0 flex-auto space-y-2">
                     <div className="mb-2">
-                      {
-                        isManager(project.manager, user._id)
-                        ? <p 
-                            className="font-bold text-xs uppercase bg-indigo-50 text-indigo-500 border-2 border-indigo-500 rounded-lg inline-block py-1 px-5"
-                          >
+                      {isManager(project.manager, user._id) ? (
+                        <p className="font-bold text-xs uppercase bg-indigo-50 text-indigo-500 border-2 border-indigo-500 rounded-lg inline-block py-1 px-5">
                           Manager
-                          </p>
-                        : <p 
-                            className="font-bold text-xs uppercase bg-green-50 text-green-500 border-2 border-green-500 rounded-lg inline-block py-1 px-5"
-                          >
+                        </p>
+                      ) : (
+                        <p className="font-bold text-xs uppercase bg-green-50 text-green-500 border-2 border-green-500 rounded-lg inline-block py-1 px-5">
                           Colaborador
-                          </p>
-                      }
+                        </p>
+                      )}
                     </div>
                     <Link
                       to={`/projects/${project._id}`}
@@ -122,7 +106,7 @@ const DashboardView = () => {
                             Ver Proyecto
                           </Link>
                         </Menu.Item>
-                        { isManager(project.manager, user._id) && (
+                        {isManager(project.manager, user._id) && (
                           <>
                             <Menu.Item>
                               <Link
@@ -136,13 +120,18 @@ const DashboardView = () => {
                               <button
                                 type="button"
                                 className="block px-3 py-1 text-sm leading-6 text-red-500"
-                                onClick={() => navigate(location.pathname + `?deleteProject=${project._id}`)}
+                                onClick={() =>
+                                  navigate(
+                                    location.pathname +
+                                      `?deleteProject=${project._id}`
+                                  )
+                                }
                               >
                                 Eliminar Proyecto
                               </button>
                             </Menu.Item>
                           </>
-                        ) }
+                        )}
                       </Menu.Items>
                     </Transition>
                   </Menu>
