@@ -4,6 +4,7 @@ import AppLaoyut from "@/layouts/AppLaoyut";
 import AuthLayout from "@/layouts/AuthLayout";
 import ProfileLayout from "@/layouts/ProfileLayout";
 
+import NotFound from "@/views/404/NotFound";
 import LoginView from "@/views/auth/LoginView";
 import ProfileView from "@/views/profile/ProfileView";
 import RegisterView from "@/views/auth/RegisterView";
@@ -43,6 +44,10 @@ const Router = () => {
           <Route path="/auth/request-code" element={<RequestNewCodeView />} />
           <Route path="/auth/forgot-password" element={<ForgotPasswordView />} />
           <Route path="/auth/new-password" element={<NewPasswordView />} />
+        </Route>
+
+        <Route element={<AuthLayout />}>
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,22 +1,22 @@
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import TaskCard from "./TaskCard";
 import DropTask from "./DropTask";
 
 import { updateStatus } from "@/api/TaskAPI";
-import { Task, TaskStatus } from "@/types/index";
 import { statusTranslations } from "@/locales/es";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Project, TaskProject, TaskStatus } from "@/types/index";
 
 type TaskListProps = {
-  tasks  : Task[];
+  tasks  : TaskProject[];
   canEdit: boolean;
 };
 
 type GroupedTasks = {
-  [key: string]: Task[];
+  [key: string]: TaskProject[];
 };
 
 const initialStatusGroups: GroupedTasks = {
@@ -66,8 +66,8 @@ const TaskList = ({ tasks, canEdit }: TaskListProps) => {
 
       mutate({ projectId, taskId, status});
 
-      queryClient.setQueryData(["project", projectId], (prevData) => {
-        const updatedTasks = prevData.tasks.map((task: Task) => {
+      queryClient.setQueryData(["project", projectId], (prevData: Project) => {
+        const updatedTasks = prevData.tasks.map((task) => {
           if (task._id === taskId) {
             return { ...task, status }
           }
@@ -78,7 +78,6 @@ const TaskList = ({ tasks, canEdit }: TaskListProps) => {
         return { ...prevData, tasks: updatedTasks }
       })
     }
-
   }
 
   return (
